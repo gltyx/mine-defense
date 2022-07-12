@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+  	
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>矿山防御 - Mine Defense</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+	
+	<!-- Custom CSS -->
+	<link href="css/custom.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/jqueryui/1.11.0/themes/smoothness/jquery-ui.min.css" />  
+	
+	<!-- If one exists, page specific custom CSS goes here -->
+	<link href="css/page-specific/minedefense-1.032.min.css" rel="stylesheet"><link href="css/qtip.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body>
+	<script src="chs.js"></script>
+	<script src="//g8hh.com/zh/core.js"></script>
+		<div id="wrap">
+			<div class="container">
+			
+				<!-- Static navbar -->
+				<div class="navbar navbar-default" role="navigation" style="display: none;">
+					<div class="container-fluid">
+					
+						<div class="navbar-header">
+						    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+							  <span class="sr-only">Toggle navigation</span>
+							  <span class="icon-bar"></span>
+							  <span class="icon-bar"></span>
+							  <span class="icon-bar"></span>
+							</button>
+							<a class="navbar-brand" href="http://scholtek.com/">Scholtek</a>
+						</div>
+						
+						<div class="navbar-collapse collapse">
+							<ul class="nav navbar-nav">
+								<li><a href="http://scholtek.com/blog">Blog</a></li>
+								<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Games <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="http://scholtek.com/minedefense">Mine Defense</a></li>
+									<li><a href="http://scholtek.com/blackhole">Black Hole Filler Extreme</a></li>
+								</ul>
+								</li>
+
+								<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Projects<b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="http://scholtek.com/mathart">Math Art Sandbox</a></li>
+									<li><a href="http://scholtek.com/isocode">Latin-Like Unicode Generator</a></li>
+								</ul>
+								</li>
+							</ul>
+							<ul class="nav navbar-nav navbar-right">
+								<li><a href="http://scholtek.com/aboutme">About Me</a></li>
+							</ul>
+						</div><!--/.nav-collapse -->
+					</div><!--/.container-fluid -->
+				</div>
+				
+<div class="contents">
+	
+	<div class = "game-window">
+	
+		<div class ="info-bar">
+			<div id="name-div">
+				<p id="title">Mine Defense</p>
+				<p id="versionheader">Version 0.XX</p>
+			</div>
+			<div id="info-column1">
+				<p id="goldcount">Gold: 0</p>
+				<p id="gemscount"></p>
+				<p id="manadisplay"></p>
+				<p id="popdisplay"></p>
+			</div>
+			<div id="info-column2">
+				<p id="tooltype">Tool: Hands (1)</p>
+				<p id="walltype">Wall: None</p>
+				<p id="gpscount">Gold Per Second: 0</p>
+			</div>
+			<div id="oracle-div">
+			    <canvas id="oracle-canvas"></canvas>
+			</div>
+			<div class="pref-column">
+				<img class="menu-icon menu-hover" id="statsButton" src="./resources/minedefense/statbutton.png" height=46 width=46>
+				<img class="menu-icon" id="menuButton" src="./resources/minedefense/menubutton.png" height=46 width=46>
+				<img class="menu-icon" id="magesButton" src="./resources/minedefense/magesbutton.png" height=46 width=46>
+				<img class="menu-icon" id="craftingButton" src="./resources/minedefense/craftingbutton.png" height=46 width=46>
+				<img class="menu-icon" id="alchButton" src="./resources/minedefense/alchbutton.png" height=46 width=46>
+				<img class="menu-icon" id="indButton" src="./resources/minedefense/industrybutton.png" height=46 width=46>
+				<img class="menu-icon" id="warButton" src="./resources/minedefense/warbutton.png" height=46 width=46>
+				<img class="menu-icon" id="mechButton" src="./resources/minedefense/mechbutton.png" height=46 width=46>
+				<img class="menu-icon" id="dragonButton" src="./resources/minedefense/dragonbutton.png" height=46 width=46>
+				<img class="menu-icon" id="libButton" src="./resources/minedefense/libbutton.png" height=46 width=46>
+			</div>
+		</div>
+		
+		<div id="bottom-row">
+		
+			<div id="screen-area"> <!-- This contains multiple divs, to switch to other menus and such -->
+				<div class ="canvas-container" id="canvas-container">
+					<p id = "loading-text">Loading Mine Defense...</p>
+					<canvas id="background-canvas"></canvas>
+					<canvas id="units-canvas"></canvas>
+					<canvas id="animation-canvas"></canvas>
+				</div>
+				
+				<div class="subscreen" id="menu-area">
+					<h2>Mine Defense Menu</h2>
+					<button class="btn oval-btn menu-button" id="saveButton" onclick="MD.saveToLocalStorage()">Save Game</button>
+					<button class="btn oval-btn menu-button" id="exportButton" onclick="MD.exportGame()">Export Save</button>
+					<button class="btn oval-btn menu-button" id="importButton" onclick="MD.importGame()">Import Save</button>
+					<br>
+					<button class="btn oval-btn menu-button" id="changeNumberSystem" onclick="MD.changeNumberSystem()">Number Format: Short Scale</button>
+					<button class="btn oval-btn menu-button" id="changePurchaseAmount" onclick="MD.changePurchaseAmount()">Force Control (Multibuy): No</button>
+					<br>
+					<button class="btn oval-btn menu-button" id="disableNotificationButton" onclick="MD.toggleNotifications()">Disable Notifications</button>
+					<button class="btn oval-btn menu-button" id="disableEffectsButton" onclick="MD.toggleClickEffects()">Disable Click Effects</button>
+					<br>
+					<button class="btn oval-btn menu-button" id="resetButton" onclick="MD.resetGame()">Reset Game</button>
+					<br>
+					<button class="btn oval-btn menu-button" onclick="MD.showCanvas()">Close Menu</button>
+				</div>
+				
+				<div class="subscreen" id="stats-area">
+					<h2>Mine Defense Stats</h2>
+					<p class="stat-heading">General</p>
+					<p id="timeelapsed">Total Time: 0</p>
+					<p id="totalgold">Total Gold: 0</p>
+					<p id="totalmana">Total Mana: 0</p>
+					<p id="totalgems">Total Gems: 0</p>
+					<p id="manualclickcount">Manual Clicks: 0</p>
+					<p id="autoclickcount">Automatic Clicks: 0</p>
+					<p id="treasuresfound">Treasures Found: 0</p>
+					<p id="markettrades">Market Trades: 0</p>
+					<br>
+					<p id="totalfood">Total Food: 0</p>
+					<p id="totaldirt">Total Dirt: 0</p>
+					<p id="totalstone">Total Stone: 0</p>
+					<p id="totalcoal">Total Coal: 0</p>
+					<p id="totaliron">Total Iron: 0</p>
+					<p id="totalsteel">Total Steel: 0</p>
+					<p id="totaladam">Total Adamantium: 0</p>
+					<br>
+					<p id="totaltraps">Total Traps Bought: 0</p>
+					<p id="totallures">Total Lures Bought: 0</p>
+					<p id="totalfort">Wall Fortifications: 0</p>					
+					<p id="goblinkilledcount">Goblins Killed: 0</p>
+					<p id="spiderkilledcount">Spiders Killed: 0</p>
+					<p id="goblinsacrificed">Goblins Sacrificed: 0</p>
+					<p id="campaignswon">Campaigns Won: 0</p>
+					<p id="soldierslost">Soldiers Lost: 0</p>
+					<br>
+					<p id="totalimbue">Total Imbuements: 0</p>
+					<p id="totalhirelings">Total Non-Ant Hirelings: 0</p>
+					<p id="totalconstruct">Total Industry Level: 0</p>
+					<br>
+					<p id="totalfire">Total Fire Essence: 0</p>
+					<p id="totalwater">Total Water Essence: 0</p>
+					<p id="totalearth">Total Earth Essence: 0</p>
+					<p id="totallightning">Total Lightning Essence: 0</p>
+					<p id="totalspirit">Total Spirit Essence: 0</p>
+					<p id="maxdraglevel">Highest Dragon Level: 0</p>
+					<p id="dragonssacrificed">Dragons Sacrificed: 0</p>
+					
+					<p class="stat-heading">Upgrades</p>
+					<p id="upgradecount">Upgrades Bought: 0</p>
+					<div id="upgrade-display">
+						<!-- Buttons will be created here with form: <button class='btn round-btn upgrade-button' id='displayupgrade$i'></button> -->
+					</div>
+					<br>
+                    <p id="upgraderemainingcount">Upgrades Remaining: 0</p>
+                    <div id="upgrades-remaining">
+						<!-- Buttons will be created here with form: <button class='btn round-btn upgrade-button' id='upgraderemaining$i'></button> -->
+	                </div>
+					<br>
+
+					<p class="stat-heading">Mage Upgrades</p>
+					<p id="mageupgradecount">Upgrades Bought: 0</p>
+					<div id="mageupgrade-display">
+						<!-- Buttons will be created here with form: <button class='btn round-btn spell-button' id='magepurchased$i'></button> -->
+	                </div>
+					<br><br>
+					<button class="btn oval-btn menu-button" onclick="MD.showCanvas()">Close Stats</button>
+				</div>
+				
+				<div class="subscreen" id="mage-area">
+					<h2>Mage Deployment</h2>
+					<p id="auradisplay">Current Mage Power: 0%</p><br>
+					<p id="totalmages"></p>
+					<p id="magesfighting" class="mage-counter">Mages Fighting: 0</p>
+					<button class='btn mage-button' id='addFighter' onclick="MD.addMage('fighting')">+</button>
+					<button class='btn mage-button' id='removeFighter' onclick="MD.removeMage('fighting')">-</button>
+					<p id="fightingdesc">0 mages dealing 0 damage.</p>
+					
+					<p id="magesmeditating" class="mage-counter">Mages Meditating: 0</p>
+					<button class='btn mage-button' id='addMeditater' onclick="MD.addMage('meditating')">+</button>
+					<button class='btn mage-button' id='removeMeditater' onclick="MD.removeMage('meditating')">-</button>
+					<p id="meditatingdesc">0 mages meditating to produce 0 mana per second.</p>
+					
+					<p id="magesdelving" class="mage-counter">Mages Delving: 0</p>
+					<button class='btn mage-button' id='addDelver' onclick="MD.addMage('delving')">+</button>
+					<button class='btn mage-button' id='removeDelver' onclick="MD.removeMage('delving')">-</button>
+					<p id="delvingdesc">0 mages delving to produce 0 mana per second.</p>
+					<p id="delvinggemfind"></p>
+
+					Number to Move: <input type="number" id="mage-move-amt" min="1">
+					<button class="btn oval-btn dialog-button" onclick="MD.resetMageMove()">Reset</button><br>	
+					
+					<p class="mage-counter">Upgrades</p>
+					<p id="mageexp">Mana: 0 (next after 1 goblin)<p>
+					<button class='btn round-btn spell-button' id='mageupgrade0' onclick='MD.buyMageUpgrade(0)'></button><button class='btn round-btn spell-button' id='mageupgrade1' onclick='MD.buyMageUpgrade(1)'></button><button class='btn round-btn spell-button' id='mageupgrade2' onclick='MD.buyMageUpgrade(2)'></button><button class='btn round-btn spell-button' id='mageupgrade3' onclick='MD.buyMageUpgrade(3)'></button><button class='btn round-btn spell-button' id='mageupgrade4' onclick='MD.buyMageUpgrade(4)'></button><button class='btn round-btn spell-button' id='mageupgrade5' onclick='MD.buyMageUpgrade(5)'></button><button class='btn round-btn spell-button' id='mageupgrade6' onclick='MD.buyMageUpgrade(6)'></button><button class='btn round-btn spell-button' id='mageupgrade7' onclick='MD.buyMageUpgrade(7)'></button><button class='btn round-btn spell-button' id='mageupgrade8' onclick='MD.buyMageUpgrade(8)'></button><button class='btn round-btn spell-button' id='mageupgrade9' onclick='MD.buyMageUpgrade(9)'></button><button class='btn round-btn spell-button' id='mageupgrade10' onclick='MD.buyMageUpgrade(10)'></button><button class='btn round-btn spell-button' id='mageupgrade11' onclick='MD.buyMageUpgrade(11)'></button><button class='btn round-btn spell-button' id='mageupgrade12' onclick='MD.buyMageUpgrade(12)'></button><button class='btn round-btn spell-button' id='mageupgrade13' onclick='MD.buyMageUpgrade(13)'></button><button class='btn round-btn spell-button' id='mageupgrade14' onclick='MD.buyMageUpgrade(14)'></button><button class='btn round-btn spell-button' id='mageupgrade15' onclick='MD.buyMageUpgrade(15)'></button><button class='btn round-btn spell-button' id='mageupgrade16' onclick='MD.buyMageUpgrade(16)'></button><button class='btn round-btn spell-button' id='mageupgrade17' onclick='MD.buyMageUpgrade(17)'></button><button class='btn round-btn spell-button' id='mageupgrade18' onclick='MD.buyMageUpgrade(18)'></button><button class='btn round-btn spell-button' id='mageupgrade19' onclick='MD.buyMageUpgrade(19)'></button><br><br>
+					<div id="imbue-div">
+						<p class="mage-counter">Hireling Imbuement</p>
+						<p>Dark Mages can gift your workers with unnatural abilities. But the energy costs are great.
+							And this mine is beginning to feel a little dark.</p>
+						<button class="btn oval-btn blue-button" onclick="MD.changeImbueBuyMode()">Change Imbue Amount</button><span id="imbue-buy-number"> - 1 level per click.</span>
+						<br>
+						<button class='btn oval-btn blue-button' id='imbue0' onclick='MD.imbue(0)'></button><br><button class='btn oval-btn blue-button' id='imbue1' onclick='MD.imbue(1)'></button><br><button class='btn oval-btn blue-button' id='imbue2' onclick='MD.imbue(2)'></button><br><button class='btn oval-btn blue-button' id='imbue3' onclick='MD.imbue(3)'></button><br><button class='btn oval-btn blue-button' id='imbue4' onclick='MD.imbue(4)'></button><br><button class='btn oval-btn blue-button' id='imbue5' onclick='MD.imbue(5)'></button><br><button class='btn oval-btn blue-button' id='imbue6' onclick='MD.imbue(6)'></button><br><button class='btn oval-btn blue-button' id='imbue7' onclick='MD.imbue(7)'></button><br><button class='btn oval-btn blue-button' id='imbue8' onclick='MD.imbue(8)'></button><br><button class='btn oval-btn blue-button' id='imbue9' onclick='MD.imbue(9)'></button><br><button class='btn oval-btn blue-button' id='imbue10' onclick='MD.imbue(10)'></button><br><button class='btn oval-btn blue-button' id='imbue11' onclick='MD.imbue(11)'></button><br><button class='btn oval-btn blue-button' id='imbue12' onclick='MD.imbue(12)'></button><br><button class='btn oval-btn blue-button' id='imbue13' onclick='MD.imbue(13)'></button><br>					</div>
+					<br>
+					<button class="btn oval-btn menu-button" onclick="MD.showCanvas()">Close Mage Window</button>
+				</div>
+
+				<div class="subscreen" id="oracle-area">
+					<h2>Oracle of Wisdom</h2>
+					<p class="oracle-text">You have entered the dwelling of the oracle of wisdom. Listen carefully, and your path shall be made clear.</p>
+					<br>
+					<p id="oracle-teaching" class="oracle-text">"It is rumored that mages of great power can be hired... but you lack gold."</p>
+					<br>
+					<button class="btn oval-btn menu-button" onclick="MD.showCanvas()">Leave Oracle</button>
+				</div>
+
+				<div class="subscreen" id="alch-area">
+					<h2>Alchemy</h2>
+					<p id="alch-potential">Alchemist's Potential: 0%</p><br>
+					<p id="total-alchemists">Total Alchemists: 0</p>
+					<div class="panel panel-default">
+				     	<!-- Default panel contents -->
+				      	<div class="panel-heading">Recipes</div>
+			      		<p>
+			      			Each recipe represents an equivalent exchange between two resources. However only a certain amount can be converted at once, you can increase
+			      			this conversion rate by allocating alchemists to a given task. Additionally, alchemists that are not achieving their potential convert fewer resources.
+			      		</p>
+						<!-- Table -->
+						<table id="alch-table" class="table">
+							<thead>
+								<tr>
+									<th>Reactant</th>
+									<th>Product</th>
+									<th>Ratio</th>
+									<th>Alchemists Working</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+					Number to Move: <input type="number" id="alch-move-amt" min="1">
+					<button class="btn oval-btn dialog-button" onclick="MD.resetAlchMove()">Reset</button><br><br>
+					
+					<button class="btn oval-btn menu-button" onclick="MD.showCanvas()">Close Alchemy Window</button>
+				</div>
+				
+				<div class="subscreen" id="crafting-area">
+					<h2>Crafting</h2>
+					<p class="section-heading">Gems</p>
+					<div class="gem-display">
+						<div class="gem-column">
+							<div id="gem0"><img class="gem-pic" id="gempic0" src="./resources/minedefense/drearygem.png" height=32 width=32><span class="gem-text" id="gemcount0">Dreary Gems: 0</span>
+								<button class='placeholder btn gem-button'>&#8607;</button>
+								<button class='btn gem-button' id='combine-gem-0' onclick="MD.combineGem(0)">&#8609;</button>
+							</div>
+							<div id="gem1"><img class="gem-pic" id="gempic1" src="./resources/minedefense/murkygem.png" height=32 width=32><span class="gem-text" id="gemcount1">Murky Gems: 0</span>
+								<button class='btn gem-button' id='break-gem-1' onclick="MD.breakGem(1)">&#8607;</button>
+								<button class='btn gem-button' id='combine-gem-1' onclick="MD.combineGem(1)">&#8609;</button>								
+							</div>
+							<div id="gem2"><img class="gem-pic" id="gempic2" src="./resources/minedefense/crackedgem.png" height=32 width=32><span class="gem-text" id="gemcount2">Cracked Gems: 0</span>
+								<button class='btn gem-button' id='break-gem-2' onclick="MD.breakGem(2)">&#8607;</button>
+								<button class='btn gem-button' id='combine-gem-2' onclick="MD.combineGem(2)">&#8609;</button>								
+							</div>
+							<div id="gem3"><img class="gem-pic" id="gempic3" src="./resources/minedefense/flawedgem.png" height=32 width=32><span class="gem-text" id="gemcount3">Flawed Gems: 0</span>
+								<button class='btn gem-button' id='break-gem-3' onclick="MD.breakGem(3)">&#8607;</button>
+								<button class='btn gem-button' id='combine-gem-3' onclick="MD.combineGem(3)">&#8609;</button>								
+							</div>
+							<div id="gem4"><img class="gem-pic" id="gempic4" src="./resources/minedefense/normalgem.png" height=32 width=32><span class="gem-text" id="gemcount4">Normal Gems: 0</span>
+								<button class='btn gem-button' id='break-gem-4' onclick="MD.breakGem(4)">&#8607;</button>
+								<button class='btn gem-button' id='combine-gem-4' onclick="MD.combineGem(4)">&#8609;</button>								
+							</div>
+						</div>
+						<div class="gem-column">
+							<div id="gem5"><img class="gem-pic" id="gempic5" src="./resources/minedefense/greatgem.png" height=32 width=32><span class="gem-text" id="gemcount5">Great Gems: 0</span>
+								<button class='btn gem-button' id='break-gem-5' onclick="MD.breakGem(5)">&#8607;</button>
+								<button class='btn gem-button' id='combine-gem-5' onclick="MD.combineGem(5)">&#8609;</button>								
+							</div>
+							<div id="gem6"><img class="gem-pic" id="gempic6" src="./resources/minedefense/flawlessgem.png" height=32 width=32><span class="gem-text" id="gemcount6">Flawless Gems: 0</span>
+								<button class='btn gem-button' id='break-gem-6' onclick="MD.breakGem(6)">&#8607;</button>
+								<button class='btn gem-button' id='combine-gem-6' onclick="MD.combineGem(6)">&#8609;</button>								
+							</div>
+							<div id="gem7"><img class="gem-pic" id="gempic7" src="./resources/minedefense/exceptionalgem.png" height=32 width=32><span class="gem-text" id="gemcount7">Exceptional Gems: 0</span>
+								<button class='btn gem-button' id='break-gem-7' onclick="MD.breakGem(7)">&#8607;</button>
+								<button class='btn gem-button' id='combine-gem-7' onclick="MD.combineGem(7)">&#8609;</button>								
+							</div>
+							<div id="gem8"><img class="gem-pic" id="gempic8" src="./resources/minedefense/perfectgem.png" height=32 width=32><span class="gem-text" id="gemcount8">Perfect Gems: 0</span>
+								<button class='btn gem-button' id='break-gem-8' onclick="MD.breakGem(8)">&#8607;</button>
+								<button class='btn gem-button' id='combine-gem-8' onclick="MD.combineGem(8)">&#8609;</button>								
+							</div>
+							<div id="gem9"><img class="gem-pic" id="gempic9" src="./resources/minedefense/majesticgem.png" height=32 width=32><span class="gem-text" id="gemcount9">Majestic Gems: 0</span>
+								<button class='btn gem-button' id='break-gem-9' onclick="MD.breakGem(9)">&#8607;</button>						
+							</div>
+						</div>
+					</div>
+					Number to Combine/Break: <input type="number" id="gem-move-amt" min="1"><br>
+					<button class="btn oval-btn menu-button" id="combineGemsButton" onclick="MD.combineGems()">Combine All</button>
+					<span>Combine Up To:</span><select id="gem-combine-limit"></select><br>
+					<p class="section-heading">Pickaxe Sockets</p>
+					<div id="socketsection">
+						<div id="craftimage">
+							<img src="./resources/minedefense/picktab.png" height=100 width=100>
+						</div>
+						<div id="sockets">
+							<span class="socket" id="socket0">Socket 1</span><select id="selectsocket0"></select>
+							<button class="btn round-btn crafting-button" id="socketbutton0" onclick="MD.setSocket(0)">Set Gem</button><br>
+					
+							<span class="socket" id="socket1">Socket 2</span><select id="selectsocket1"></select>
+							<button class="btn round-btn crafting-button" id="socketbutton1" onclick="MD.setSocket(1)">Set Gem</button><br>
+					
+							<span class="socket" id="socket2">Socket 3</span><select id="selectsocket2"></select>
+							<button class="btn round-btn crafting-button" id="socketbutton2" onclick="MD.setSocket(2)">Set Gem</button><br>
+					
+						</div>
+					</div>
+					<button class="btn oval-btn menu-button" id="prygemsbutton" onclick="MD.pryGems()">Pry Gems From Pick</button><br>
+					<button class="btn oval-btn menu-button" id="closeCraftingButton" onclick="MD.showCanvas()">Close</button>
+				</div>
+
+				<div class="subscreen" id="industry-area">
+					<div id="industry-canvases">
+						<h2>Industrial District</h2>
+						<div id="industry-container">
+							<canvas id="industry-background"></canvas>
+							<canvas id="industry-canvas"></canvas>
+							<canvas id="industry-constructs"></canvas>
+						</div>
+						<button id="industry-move-btn" class="btn oval-btn menu-button" onclick="MD.openMoveBuildingDialog()">Move Structures</button><br>
+						<button class="btn oval-btn menu-button" onclick="MD.showCanvas()">Close Industry Screen</button>
+					</div>
+
+					<div class="stretch"></div>
+
+					<div id="industry-resources">
+						<h2>Resources</h2>
+						<p class="ind-resource-text" id="fooddisplay"></p>
+						<p class="ind-resource-text" id="dirtdisplay"></p>
+						<p class="ind-resource-text" id="stonedisplay"></p>
+						<p class="ind-resource-text" id="coaldisplay"></p>
+						<p class="ind-resource-text" id="irondisplay"></p>
+						<p class="ind-resource-text" id="steeldisplay"></p>
+						<p class="ind-resource-text" id="adamdisplay"></p>
+						<p class="ind-resource-text" id="flaxdisplay"></p>
+						<p class="ind-resource-text" id="dragdisplay"></p>
+					</div>
+				</div>
+
+				<div class="subscreen" id="military-area">
+					<h2>Military Campaigns</h2>
+					<p>You have spent long enough sitting back and suffering relentless invasion. It is time to strike back - but be warned, you may be kicking the hornet's nest.</p>
+					<br>
+
+					<p id="enemy-strength">Enemy Strength: 1</p>
+					<p id="available-troops">Available Soldiers: 1</p>
+					<p id="effective-troops">Army Strength: 1 (Training Level - 1)</p>
+					<button id="attack-btn" class="btn oval-btn dialog-button" onclick="MD.launchCampaign()">Launch campaign!</button>
+					<br>
+
+					<h2>Campaign Results</h2>
+					<p id="military-results">No campaigns have been launched.</p>
+					<p id="campaignswon2">Campaigns Won: 0</p>
+					<br>
+
+					<button id="training-btn" class="btn oval-btn dialog-button" onclick="MD.increaseConstructLevel(9)">Train your soldiers!</button><br>
+					<p id="barrack-upgrade-cost">Upgrade Cost: 1000 Food</p>
+					<p id="barrack-upgrade-remainder">Food After Upgrade: 1000 Food</p>
+					<p id="barrack-adamantium-counter"></p><br>
+					<button class="btn oval-btn menu-button" onclick="MD.showCanvas()">Close Military Screen</button>
+				</div>
+
+				<div class="subscreen" id="mechanist-area">
+					<h2>Machine Shop</h2>
+					<p>The technological age has begun to dawn in your kingdom, and with a little bit of magic, your mechanists believe they can make some of your servants a tad more obsolete.</p>
+					<p id="auto-amt">You can automatically build up to 1 mechanical servant each second.</p>
+					<br>
+
+					<div id="mech-mages">
+						<h3>Mecha-Mages</h3>
+						<p>A skeleton of adamantium, a heart and soul of gem-bound magic, a body of water, and just enough flame to deal some damage.</p>
+						<button class="btn oval-btn menu-button" id="buildMageButton" onclick="MD.buildMage()">Build</button><br>
+						<button class="btn oval-btn menu-button" id="autoMageButton" onclick="MD.toggleAutoMage()">Try to Auto-Build: False</button>
+						<p id="mech-mage-count"></p>
+					</div>
+
+					<div id="mech-craftsman">
+						<h3>Cyber-Craftsmen</h3>
+						<p>A skeleton of adamantium, a heart and soul of gem-bound magic, a body of water, and fire and earth to practice their trade.</p>
+						<button class="btn oval-btn menu-button" id="buildMasonButton" onclick="MD.buildCraftsman()">Build</button><br>
+						<button class="btn oval-btn menu-button" id="autoMasonButton" onclick="MD.toggleAutoMason()">Try to Auto-Build: False</button>
+						<p id="mech-mason-count"></p>
+					</div>
+
+					<div id="mech-alchemist">
+						<h3>Automated-Alchemists</h3>
+						<p>A skeleton of adamantium, a heart and soul of gem-bound magic, a body of water, and a deep knowledge of the elements for their science.</p>
+						<button class="btn oval-btn menu-button" id="buildAlchButton" onclick="MD.buildAlchemist()">Build</button><br>
+						<button class="btn oval-btn menu-button" id="autoAlchButton" onclick="MD.toggleAutoAlch()">Try to Auto-Build: False</button>
+						<p id="mech-alch-count"></p>
+					</div>
+
+					<br>
+					<button class="btn oval-btn menu-button" id="closeMechButton" onclick="MD.showCanvas()">Close</button>
+				</div>
+
+				<div class="subscreen" id="dragon-area">
+					<h2>Dragons</h2>
+					<p id="dragon-name" class="section-heading">No Dragon</p>
+					<p id="dragon-description">You don't have a dragon. And everyone should have a dragon... also, how are you on this page? It doesn't unlock until you have a dragon. Dirty hacker.</p>
+					<br>
+					<p id="dragon-power">Dragons also have an active effect only while you have that dragon.</p>
+					<br>
+					<p id="dragon-level">Your dragon is level 0. That's kind of sad. I bet the other dragons make fun of it.</p>
+					<br>
+					
+					<p class="section-heading">Feed Your Dragon</p>
+					<div id="essence-dragon-area">
+						<p>Your dragon can be fed any kind of essence. Once you select one, you will not be able to choose again. Choose wisely.</p>
+						<select id="dragon-essence-type"></select><br>
+						<button class="btn oval-btn dialog-button" onclick="MD.selectEssenceType()">Select</button><br>
+					</div>
+					<div id="feed-dragon-area">
+						<button id="dragon-1p" class="btn oval-btn dialog-button dragon-button" onclick="MD.feedDragon('1P')">Feed X Times (XM Food)</button><br>
+						<button id="dragon-10p" class="btn oval-btn dialog-button dragon-button" onclick="MD.feedDragon('10P')">Feed X Times (XM Food)</button><br>
+						<button id="dragon-100p" class="btn oval-btn dialog-button dragon-button" onclick="MD.feedDragon('100P')">Feed X Times (XM Food)</button><br>
+						<button id="dragon-lots" class="btn oval-btn dialog-button dragon-button" onclick="MD.feedDragon('silly')">Feed X Times (XM Food)</button><br>
+					</div>
+					<button class="btn oval-btn menu-button" id="closeDragonsButton" onclick="MD.showCanvas()">Close</button>
+				</div>
+
+				<div class="subscreen" id="arch-area">
+					<h2>Arcaneum</h2>
+
+					<p id="total-spirit-essence">Total Spirit Essence: 0</p>
+					<div class="panel panel-default">
+				     	<!-- Default panel contents -->
+				      	<div class="panel-heading">Disciplines</div>
+			      		<p>
+			      			You can allocate your spirit essence to any of the following resource categories. For each spirit essence in a category,
+			      			you will gain 10% more resources in that category.
+			      		</p>
+						<!-- Table -->
+						<table id="spirit-table" class="table">
+							<thead>
+								<tr>
+									<th>Resources</th>
+									<th>Essence Allocated</th>
+								</tr>
+
+								<tr id="basic-res">
+									<td>Basic (Gold/Mana)</td>
+									<td>
+										<span id="res-text-0">0 (Boosting resource gain by 0%)</span>
+										<button id="add-basic-res" class="btn mage-button" onclick="MD.remSpirit(0)" style="float: right;">-</button>
+										<button id="rem-basic-res" class="btn mage-button" onclick="MD.addSpirit(0)" style="float: right;">+</button>
+									</td>
+								</tr>
+
+								<tr id="gems-res">
+									<td>Gems</td>
+									<td>
+										<span id="res-text-1">0 (Boosting resource gain by 0%)</span>
+										<button id="add-gems-res" class="btn mage-button" onclick="MD.remSpirit(1)" style="float: right;">-</button>
+										<button id="rem-gems-res" class="btn mage-button" onclick="MD.addSpirit(1)" style="float: right;">+</button>
+									</td>
+								</tr>
+
+								<tr id="rawmat-res">
+									<td>Raw Materials</td>
+									<td>
+										<span id="res-text-2">0 (Boosting resource gain by 0%)</span>
+										<button id="add-rawmat-res" class="btn mage-button" onclick="MD.remSpirit(2)" style="float: right;">-</button>
+										<button id="rem-rawmat-res" class="btn mage-button" onclick="MD.addSpirit(2)" style="float: right;">+</button>
+									</td>
+								</tr>
+
+								<tr id="raremat-res">
+									<td>Rare Materials</td>
+									<td>
+										<span id="res-text-3">0 (Boosting resource gain by 0%)</span>
+										<button id="add-raremat-res" class="btn mage-button" onclick="MD.remSpirit(3)" style="float: right;">-</button>
+										<button id="rem-raremat-res" class="btn mage-button" onclick="MD.addSpirit(3)" style="float: right;">+</button>
+									</td>
+								</tr>
+
+								<tr id="hireling-res">
+									<td>Hirelings</td>
+									<td>
+										<span id="res-text-4">0 (Boosting resource gain by 0%)</span>
+										<button id="add-hireling-res" class="btn mage-button" onclick="MD.remSpirit(4)" style="float: right;">-</button>
+										<button id="rem-hireling-res" class="btn mage-button" onclick="MD.addSpirit(4)" style="float: right;">+</button>
+									</td>
+								</tr>
+
+								<tr id="essence-res">
+									<td>Essence</td>
+									<td>
+										<span id="res-text-5">0 (Boosting resource gain by 0%)</span>
+										<button id="add-essence-res" class="btn mage-button" onclick="MD.remSpirit(5)" style="float: right;">-</button>
+										<button id="rem-essence-res" class="btn mage-button" onclick="MD.addSpirit(5)" style="float: right;">+</button>
+									</td>
+								</tr>
+
+							</thead>
+						</table>
+					</div>
+
+					Number to Move: <input type="number" id="spirit-move-amt" min="1">
+					<button class="btn oval-btn dialog-button" onclick="MD.resetSpiritMove()">Reset</button><br>		
+					
+					<br>
+
+					<div id="arc-gold-area">
+						<p class="mage-counter">The Golden Well</p><br>
+						<button id="arc-power-btn" class="btn oval-btn dialog-button" onclick="MD.increaseConstructLevel(24)">Make a Wish!</button><br>
+						<p id="arc-gold-effect">Your Arcaneum is level 0 so each essence provides a 10% multiplier.</p>
+					</div>
+					<br>
+					<button class="btn oval-btn menu-button" id="closeArchButton" onclick="MD.showCanvas()">Close</button>
+				</div>
+				
+				<div id="export-area">
+					<h2>Export Code</h2>
+						<textarea readonly id="export-code"></textarea>
+					<br>
+					<button class="btn oval-btn menu-button" id="closeExportButton" onclick="MD.showCanvas()">Close</button>
+				</div>
+			</div>
+			
+			<div id="shop-wrapper">
+				<div class = "shop" id="tabContainer">
+					
+					<div class="tabs">
+						<ul>
+							<li id="tabHeader_1"><img src="./resources/minedefense/picktab.png" height=46 width=46></li>
+							<li id="tabHeader_2"><img src="./resources/minedefense/scrolltab.png" height=46 width=46></li>
+							<li id="tabHeader_3"><img src="./resources/minedefense/shieldtab.png" height=46 width=46></li>
+							<li id="tabHeader_4"><img src="./resources/minedefense/arrowtab.png" height=46 width=46></li>
+						</ul>
+					</div>
+					
+					<div class="tabscontent">
+						<div class="tabpage" id="tabpage_1">
+							<p class="shop-heading">Shop</p>
+							<button class="btn two-line-btn shop-button" id="newpickbutton" onclick="MD.buypick()"></button>
+                            <button class="btn two-line-btn shop-button" id="rebuypickbutton" onclick="MD.rebuypick()"></button>
+							<br><br>
+							<div id = "structures-div">
+								<p class="shop-heading" id="structuresection">Structures</p><br>
+								<button class='btn two-line-btn shop-button' id='structure0' onclick='MD.buyStructure(0)'></button>								<br><br>
+							</div>
+							<p class="shop-heading" id="sellgemsection">Gem Sales</p><br>
+							<button class='btn two-line-btn shop-button' id='sellgem0' onclick='MD.sellGem(0)'></button><button class='btn two-line-btn shop-button' id='sellgem1' onclick='MD.sellGem(1)'></button><button class='btn two-line-btn shop-button' id='sellgem2' onclick='MD.sellGem(2)'></button><button class='btn two-line-btn shop-button' id='sellgem3' onclick='MD.sellGem(3)'></button><button class='btn two-line-btn shop-button' id='sellgem4' onclick='MD.sellGem(4)'></button><button class='btn two-line-btn shop-button' id='sellgem5' onclick='MD.sellGem(5)'></button><button class='btn two-line-btn shop-button' id='sellgem6' onclick='MD.sellGem(6)'></button><button class='btn two-line-btn shop-button' id='sellgem7' onclick='MD.sellGem(7)'></button><button class='btn two-line-btn shop-button' id='sellgem8' onclick='MD.sellGem(8)'></button><button class='btn two-line-btn shop-button' id='sellgem9' onclick='MD.sellGem(9)'></button>						</div>
+						<div class="tabpage" id="tabpage_2">
+							<p class="shop-heading">For Hire</p>
+							<button class='btn two-line-btn hireling-button' id='hireling0' onclick='MD.hire(0)'></button><button class='btn two-line-btn hireling-button' id='hireling1' onclick='MD.hire(1)'></button><button class='btn two-line-btn hireling-button' id='hireling2' onclick='MD.hire(2)'></button><button class='btn two-line-btn hireling-button' id='hireling3' onclick='MD.hire(3)'></button><button class='btn two-line-btn hireling-button' id='hireling4' onclick='MD.hire(4)'></button><button class='btn two-line-btn hireling-button' id='hireling5' onclick='MD.hire(5)'></button><button class='btn two-line-btn hireling-button' id='hireling6' onclick='MD.hire(6)'></button><button class='btn two-line-btn hireling-button' id='hireling7' onclick='MD.hire(7)'></button><button class='btn two-line-btn hireling-button' id='hireling8' onclick='MD.hire(8)'></button><button class='btn two-line-btn hireling-button' id='hireling9' onclick='MD.hire(9)'></button><button class='btn two-line-btn hireling-button' id='hireling10' onclick='MD.hire(10)'></button><button class='btn two-line-btn hireling-button' id='hireling11' onclick='MD.hire(11)'></button><button class='btn two-line-btn hireling-button' id='hireling12' onclick='MD.hire(12)'></button><button class='btn two-line-btn hireling-button' id='hireling13' onclick='MD.hire(13)'></button>						</div>
+						<div class="tabpage" id="tabpage_3">
+							<p class="shop-heading">Defense</p>
+							<button class="btn two-line-btn defense-button" id="buildwallbutton" onclick="MD.buyWall()"></button>
+							<button class="btn two-line-btn defense-button" id="hiremasonbutton" onclick="MD.hireMason()"></button>
+							<button class="btn two-line-btn defense-button" id="hiremagebutton" onclick="MD.hireMage()"></button>
+							<button class="btn two-line-btn defense-button" id="hirealchemistbutton" onclick="MD.hireAlchemist()"></button>
+							<br><br>
+							<p class="shop-heading" id="trapsection">Traps</p><br>
+							<button class="btn two-line-btn defense-button" id="trap0" onclick="MD.buyTrap(0)"></button>
+							<button class="btn two-line-btn defense-button" id="trap1" onclick="MD.buyTrap(1)"></button>
+							<button class="btn two-line-btn defense-button" id="trap2" onclick="MD.buyTrap(2)"></button>
+							<button class="btn two-line-btn defense-button" id="trap3" onclick="MD.buyTrap(3)"></button>
+							<button class="btn two-line-btn defense-button" id="trap4" onclick="MD.buyTrap(4)"></button>
+							<br>
+							<button class="btn two-line-btn defense-button" id="resettrap" onclick="MD.resetTraps()">Remove Traps</button>
+						    <br><br>
+						    <p class="shop-heading" id="luresection">Lures</p><br>
+						    <button class="btn two-line-btn defense-button" id="lure0" onclick="MD.buyLure(0)"></button>
+						    <button class="btn two-line-btn defense-button" id="resetlure" onclick="MD.resetLures()">Remove Lures</button>
+						</div>
+						<div class="tabpage" id="tabpage_4">
+							<p class="shop-heading">Upgrade Shop</p>
+							<button class='btn round-btn upgrade-button' id='buyupgrade0' onclick='MD.buyUpgrade(0)'></button><button class='btn round-btn upgrade-button' id='buyupgrade1' onclick='MD.buyUpgrade(1)'></button><button class='btn round-btn upgrade-button' id='buyupgrade2' onclick='MD.buyUpgrade(2)'></button><button class='btn round-btn upgrade-button' id='buyupgrade3' onclick='MD.buyUpgrade(3)'></button><button class='btn round-btn upgrade-button' id='buyupgrade4' onclick='MD.buyUpgrade(4)'></button><button class='btn round-btn upgrade-button' id='buyupgrade5' onclick='MD.buyUpgrade(5)'></button><button class='btn round-btn upgrade-button' id='buyupgrade6' onclick='MD.buyUpgrade(6)'></button><button class='btn round-btn upgrade-button' id='buyupgrade7' onclick='MD.buyUpgrade(7)'></button><button class='btn round-btn upgrade-button' id='buyupgrade8' onclick='MD.buyUpgrade(8)'></button><button class='btn round-btn upgrade-button' id='buyupgrade9' onclick='MD.buyUpgrade(9)'></button><button class='btn round-btn upgrade-button' id='buyupgrade10' onclick='MD.buyUpgrade(10)'></button><button class='btn round-btn upgrade-button' id='buyupgrade11' onclick='MD.buyUpgrade(11)'></button><button class='btn round-btn upgrade-button' id='buyupgrade12' onclick='MD.buyUpgrade(12)'></button><button class='btn round-btn upgrade-button' id='buyupgrade13' onclick='MD.buyUpgrade(13)'></button><button class='btn round-btn upgrade-button' id='buyupgrade14' onclick='MD.buyUpgrade(14)'></button><button class='btn round-btn upgrade-button' id='buyupgrade15' onclick='MD.buyUpgrade(15)'></button><button class='btn round-btn upgrade-button' id='buyupgrade16' onclick='MD.buyUpgrade(16)'></button><button class='btn round-btn upgrade-button' id='buyupgrade17' onclick='MD.buyUpgrade(17)'></button><button class='btn round-btn upgrade-button' id='buyupgrade18' onclick='MD.buyUpgrade(18)'></button><button class='btn round-btn upgrade-button' id='buyupgrade19' onclick='MD.buyUpgrade(19)'></button><button class='btn round-btn upgrade-button' id='buyupgrade20' onclick='MD.buyUpgrade(20)'></button><button class='btn round-btn upgrade-button' id='buyupgrade21' onclick='MD.buyUpgrade(21)'></button><button class='btn round-btn upgrade-button' id='buyupgrade22' onclick='MD.buyUpgrade(22)'></button><button class='btn round-btn upgrade-button' id='buyupgrade23' onclick='MD.buyUpgrade(23)'></button><button class='btn round-btn upgrade-button' id='buyupgrade24' onclick='MD.buyUpgrade(24)'></button><button class='btn round-btn upgrade-button' id='buyupgrade25' onclick='MD.buyUpgrade(25)'></button><button class='btn round-btn upgrade-button' id='buyupgrade26' onclick='MD.buyUpgrade(26)'></button><button class='btn round-btn upgrade-button' id='buyupgrade27' onclick='MD.buyUpgrade(27)'></button><button class='btn round-btn upgrade-button' id='buyupgrade28' onclick='MD.buyUpgrade(28)'></button><button class='btn round-btn upgrade-button' id='buyupgrade29' onclick='MD.buyUpgrade(29)'></button><button class='btn round-btn upgrade-button' id='buyupgrade30' onclick='MD.buyUpgrade(30)'></button><button class='btn round-btn upgrade-button' id='buyupgrade31' onclick='MD.buyUpgrade(31)'></button><button class='btn round-btn upgrade-button' id='buyupgrade32' onclick='MD.buyUpgrade(32)'></button><button class='btn round-btn upgrade-button' id='buyupgrade33' onclick='MD.buyUpgrade(33)'></button><button class='btn round-btn upgrade-button' id='buyupgrade34' onclick='MD.buyUpgrade(34)'></button><button class='btn round-btn upgrade-button' id='buyupgrade35' onclick='MD.buyUpgrade(35)'></button><button class='btn round-btn upgrade-button' id='buyupgrade36' onclick='MD.buyUpgrade(36)'></button><button class='btn round-btn upgrade-button' id='buyupgrade37' onclick='MD.buyUpgrade(37)'></button><button class='btn round-btn upgrade-button' id='buyupgrade38' onclick='MD.buyUpgrade(38)'></button><button class='btn round-btn upgrade-button' id='buyupgrade39' onclick='MD.buyUpgrade(39)'></button><button class='btn round-btn upgrade-button' id='buyupgrade40' onclick='MD.buyUpgrade(40)'></button><button class='btn round-btn upgrade-button' id='buyupgrade41' onclick='MD.buyUpgrade(41)'></button><button class='btn round-btn upgrade-button' id='buyupgrade42' onclick='MD.buyUpgrade(42)'></button><button class='btn round-btn upgrade-button' id='buyupgrade43' onclick='MD.buyUpgrade(43)'></button><button class='btn round-btn upgrade-button' id='buyupgrade44' onclick='MD.buyUpgrade(44)'></button><button class='btn round-btn upgrade-button' id='buyupgrade45' onclick='MD.buyUpgrade(45)'></button><button class='btn round-btn upgrade-button' id='buyupgrade46' onclick='MD.buyUpgrade(46)'></button><button class='btn round-btn upgrade-button' id='buyupgrade47' onclick='MD.buyUpgrade(47)'></button><button class='btn round-btn upgrade-button' id='buyupgrade48' onclick='MD.buyUpgrade(48)'></button><button class='btn round-btn upgrade-button' id='buyupgrade49' onclick='MD.buyUpgrade(49)'></button>						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> <!-- Game Window -->
+
+	<!-- Jquery Dialogs -->
+	<div class="jquery-dialog" id="busy-dialog">
+		<p>You can not begin construction at the moment - your craftsmen are busy!</p>
+		<button class="btn oval-btn dialog-button" onclick="$('#busy-dialog').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="prep-land-dialog">
+		<p>Your craftsmen can prepare this land for construction at a cost of 100K dirt per pixel. Be warned, however, that they will not
+			be able to repair your wall while they are working.</p>
+		<button id="start-prep-land-btn" class="btn oval-btn dialog-button">Start</button>
+		<button class="btn oval-btn dialog-button" onclick="$('#prep-land-dialog').dialog('close')">Cancel</button>
+	</div>
+
+	<div class="jquery-dialog" id="start-construction-dialog">
+		<p>Now that the land is prepared, you can begin construction on it. Below is a list of available structures and their prices.</p>
+		<select id="construction-select"></select><br>
+		<button id="start-construction-btn" class="btn oval-btn dialog-button">Start</button>
+		<button class="btn oval-btn dialog-button" onclick="$('#start-construction-dialog').dialog('close')">Cancel</button>
+	</div>
+
+	<div class="jquery-dialog" id="move-construct-dialog">
+		<p>While this dialog is open, you can select two buildings to swap their positions at a cost of 5 Neurochrysalises. To do this, while this dialog is open, simply click on the buildings
+			you would like to swap, and the text below will change accordingly. You may have to move this dialog to see them.</p>
+		<br>
+		<p id="swap-building-1">Building 1: None</p>
+		<p id="swap-building-2">Building 2: None</p>
+		<button id="perform-swap" class="btn oval-btn dialog-button" onclick="MD.performBuildingMove()">Move!</button>
+		<button class="btn oval-btn dialog-button" onclick="$('#move-construct-dialog').dialog('close');MD.MOVE_DIALOG_OPEN = false;">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-0">
+		<p>Select a gem from the list below - your gems will automatically be combined to form the selected gem. Note that the auto-smithy only combines gems, it cannot break them.</p>
+		<p id="auto-smith-power">Smithy Power: 10 gems/second</p>
+		<div id="auto-smith-upgrades">
+			<span id="auto-smith-upgrade-cost">Upgrade Cost: 10M Dirt</span>
+			<br>
+			<button class="btn oval-btn dialog-button" onclick='MD.increaseConstructLevel(0)'>Upgrade</button>
+		</div>
+		<br>
+		<span>Gem:</span><select id="auto-smith-select"></select><br>
+		<button class="btn oval-btn dialog-button" onclick="MD.setAutoSmithGem()">Set Gem</button>
+		<div id="limit-speed">
+			<br>
+			<p id="auto-smith-limit">Combinations Limit: 0</p>
+			<span>Set Limit:</span><input type="number" id="auto-smith-limit-amt" min="0" value="0">
+			<button class="btn oval-btn dialog-button" onclick="MD.setAutoSmithLimit()">Go!</button><br>
+		</div>
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-0').dialog('close')">Cancel</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-1">
+		<p>Your rock golems slave away in the hot sun deep in the quarry. Keep checking back, perhaps they'll find something.</p>
+		
+		<div id="quarry-discovery">
+			<br>
+			<p>You found something!</p>
+			<button class="btn oval-btn dialog-button" onclick="MD.findQuarryReward()">Take a look!</button>
+		</div>
+
+		<p id="quarry-discovery-text"></p>
+
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-1').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-2">
+		<p id="dragon-mount-desc">A large mound of rock sits plainly in a fenced compound. Have you considered adding some gold?</p>
+		<p id="dragon-mount-power">Wyvern Boost: 1 times Gold Per Second</p>
+		<button id="dragon-mount-btn" class="btn oval-btn dialog-button" onclick="MD.increaseConstructLevel(2)">Pile It On!</button>
+		<br>
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-2').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-3">
+		<p id="mage-tower-desc">Mages bustle about, speaking softly to each other, and a magical aura seems to emanate from deep within.</p>
+		<p id="mage-tower-research">Mage Wisdom Level: 0</p>
+		<p id="wisdom-mult">Mana Multiplier: 1</p>
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-3').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-4">
+		<p id="statue-desc">You have decided to begin building an empire, and statues are a good way to remind the people who is in charge. If you build them across the land and send people to collect, you are bound to earn great riches.</p>
+		<span id="statue-upgrade-cost">Upgrade Cost: 10K Iron</span><br>
+		<button id="statue-btn" class="btn oval-btn dialog-button" onclick="MD.increaseConstructLevel(4)">Expand Your Empire!</button><br>
+		<br>
+
+		<p id="statue-findings"></p>
+		<p id="statue-return-timer"></p>
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-4').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-5">
+		<p id="pit-desc">A dark place where nightmarish goblins toil day and night over vats of hot metal.</p>
+		<p id="pit-addy-amt">Your smelting pit has a chance of producing 1 adamantium.</p>
+		<span id="pit-upgrade-cost">Upgrade Cost: 1B Stone</span><br>
+		<button id="pit-btn" class="btn oval-btn dialog-button" onclick="MD.increaseConstructLevel(5)">Send more Goblins!</button><br>
+		<br>
+
+		<p id="pit-rate"></p>
+		<button id="pit-toggle-btn" class="btn oval-btn dialog-button" onclick="MD.togglePit()">Stop Smelting!</button><br>
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-5').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-6">
+		<p id="market-desc">A bustling market filled with exotic food and rare minerals. You can trade various resources here, but be warned, prices change often and they aren't always fair! Click the buttons to trade!</p>
+		<p id="market-time-remaining">New merchants with new prices will arrive in 0 seconds!</p>
+		<button id="send-scouts" class="btn oval-btn dialog-button" onclick="MD.sendMarketScouts()">Send Scouts! (5 Craftsmen)</button><br>
+		<span>Trade Amount:</span>
+		<button id="market-1" class="btn oval-btn dialog-button" onclick="MD.setMarket(1)">1%</button>
+		<button id="market-10" class="btn oval-btn dialog-button" onclick="MD.setMarket(10)">10%</button>
+		<button id="market-all" class="btn oval-btn dialog-button" onclick="MD.setMarket(100)">All</button>
+		<div id="market-trades">
+
+		</div>
+		<button class="btn oval-btn dialog-button" onclick="MD.closeMarket()">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-7">
+		<p id="habit-desc">The center of life in your kingdom.</p>
+		<p id="population-txt">Population: 1</p>
+		<br>
+		<p>Upgrading your habitation allows more people to take up residence in your Kingdom. Beware, however, that they will die if you don't have sufficient food.</p>
+		<p id="hab-upgrade-cost">Upgrade Cost: 5K Steel</p>
+   
+		New Homes: <input type="number" id="pop-amt" min="1" value="1">
+		<button class="btn oval-btn dialog-button" id="add-pop-amt" onclick="MD.addPopulation()">Go!</button><br><br>
+
+		<p>If your population gets too high, you might not be able to feed them all. As a leader you may have to make the hard decision of sending them into exile.</p>
+		Number to Exile: <input type="number" id="exile-amt" min="1" value="1">
+		<button class="btn oval-btn dialog-button" onclick="MD.exilePopulation()">Go!</button><br>		
+		
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-7').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-8">
+		<p id="farm-desc8">A bustling field growing a strange blue fruit.</p>
+		<p id="farm-txt8">Harvest Data: 50 food every 60 seconds</p>
+		<br>
+		<p id="farm-upgrade-cost8">Upgrade Cost: 10 Steel</p>
+		<button id="farm-btn8" class="btn oval-btn dialog-button" onclick="MD.increaseConstructLevel(8)">Expand your fields!</button><br>
+		
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-8').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-9">
+		<p id="barrack-desc">You're not sure how much work it will take to whip your people into a fighting force, but you have to start somewhere.</p>
+		<button class="btn oval-btn dialog-button" onclick="MD.showMilitary()">View Army</button><br>
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-9').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-10">
+		<p id="uni-desc">The halls of higher learning glow with the furthering of civilization.</p>
+		<p id="uni-level">Education Level: 0</p>
+		<p id="uni-market">Average Market Boost: 0</p>
+		<p id="uni-essence">Essence Multiplier: 0</p><br>
+
+		<p>You can send people to be scholars - the more scholars you have the more you will discover. However, each new group you send will require one adamantium for tuition.</p>
+		Scholars: <input type="number" id="scholar-amt" min="1" value="1">
+		<button class="btn oval-btn dialog-button" onclick="MD.addScholars()">Go!</button><br>
+		
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-10').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-11">
+		<p id="blacksmith-desc">An uncomfortable heat hangs over the ground, and a gruff, solid man grunts at you to say what you need.</p>
+		<button id="weapon-upgrade-btn" class="btn oval-btn dialog-button" onclick="MD.increaseConstructLevel(11)">Hone Weapons (1 Adamantium, 100 Steel)</button><br>
+		<button id="army-weaken-btn" class="btn oval-btn dialog-button" onclick="MD.bombEnemies()">Bomb Enemies (100 Mana)</button><br>
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-11').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-12">
+		<p id="farm-desc12">A bustling field growing a strange blue fruit. Occasionally you find a few sprigs of flax as well.</p>
+		<p id="farm-txt12">Harvest Data: 50 food every 60 seconds</p>
+		<br>
+		<p id="farm-upgrade-cost12">Upgrade Cost: 10 Steel</p>
+		<button id="farm-btn12" class="btn oval-btn dialog-button" onclick="MD.increaseConstructLevel(12)">Expand your fields!</button><br>
+		
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-12').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-13">
+		<p id="farm-desc13">A bustling field growing a strange blue fruit. For some reason this farm produces slightly more flax.</p>
+		<p id="farm-txt13">Harvest Data: 50 food every 60 seconds</p>
+		<br>
+		<p id="farm-upgrade-cost13">Upgrade Cost: 10 Steel</p>
+		<button id="farm-btn13" class="btn oval-btn dialog-button" onclick="MD.increaseConstructLevel(13)">Expand your fields!</button><br>
+		
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-13').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-14">
+		<p id="fletcher-desc">A team of skilled craftsmen make bowstrings to send out your bravest men and women to hunt dragons. You can now hire them, but they don't come cheap!</p>
+		<p id="fletcher-upgrade-cost">Upgrade Cost: 100 Flax</p>
+		<button id="fletcher-btn" class="btn oval-btn dialog-button" onclick="MD.increaseConstructLevel(14)">Train your Hunters!</button><br>
+		
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-14').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-15">
+		<p id="fireshrine-desc">Fire swirls around the central orb in front of a bone white sculpture radiating power. Your mages seem to be tapping into it somehow...</p>
+		<p id="fireessdisplay">Fire Essence: 0</p>
+		<p id="fireshrine-upgrade-cost">Upgrade Cost: 100 Dragonscale</p>
+		<button id="fireshrine-btn" class="btn oval-btn dialog-button" onclick="MD.increaseConstructLevel(15)">More Power!</button><br>
+		
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-15').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-16">
+		<p id="admin-desc">A flurry of activity fills the halls as scores of accountants attempt to keep track of all the resources coming from such odd sources.</p>
+		Data Refresh: <input type="number" id="admin-range" min="10"> Seconds<br>
+		Data Display: <input type="number" id="admin-display" min="1"> Seconds<br>
+		<button class="btn oval-btn dialog-button" onclick="MD.updateAdminDialog()">Update!</button><br>	
+
+		<div id="admin-basic-section">
+			<p id="admin-status">Collecting data...</p>
+		</div>
+		<div id="admin-gem-section"></div>
+		<div id="admin-raw-section"></div>
+		<div id="admin-rare-section"></div>
+		<div id="admin-hireling-section"></div>
+		<div id="admin-essence-section"></div>
+		<div id="admin-other-section"></div>
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-16').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-17">
+		<p id="watershrine-desc">A whirling vortex of water fills the dark orb in front of the statue. The air around it feels cold, and... moist. Your alchemists spend an unusual amount of time near it...</p>
+		<p id="wateressdisplay">Water Essence: 0</p>
+		<p id="watershrine-upgrade-cost">Upgrade Cost: 100 Dragonscale</p>
+		<button id="watershrine-btn" class="btn oval-btn dialog-button" onclick="MD.increaseConstructLevel(17)">More Power!</button><br>
+		
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-17').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-18">
+		<p id="mech-desc">Whirring gears and clanging metal create a violent symphony for miles around your machine shop.</p>
+		<button class="btn oval-btn dialog-button" onclick="MD.showMechanist()">View Machine Shop</button><br>
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-18').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-19">
+		<p id="earthshrine-desc">A quaking vortex of earth fills the orb in front of the statue. When you stand near it, you begin to understand the pickaxe in your hands on a new level.</p>
+		<p id="earthessdisplay">Earth Essence: 0</p>
+		<p id="earthshrine-upgrade-cost">Upgrade Cost: 100 Dragonscale</p>
+		<button id="earthshrine-btn" class="btn oval-btn dialog-button" onclick="MD.increaseConstructLevel(19)">More Power!</button><br>
+		
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-19').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-20">
+		<p id="grave-desc">A somber field, wrapped in memory. Here your soldiers draw strength from memory and wish for revenge.</p>
+		<p id="grave-effect">Your army strength is increased by 0% by memories of fallen comrades.</p>
+		<button id="blind-revenge-btn" class="btn oval-btn dialog-button" onclick="MD.toggleBlindRevenge()">Initiate Blind Revenge</button><br>
+		<p id="blind-revenge-txt">Blind revenge is disabled.</p>
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-20').dialog('close')">Close</button>
+	</div>
+
+	<div id="links">
+		<span>Links:</span>
+		<a class="md-link" href="http://scholtek.com/md/release-notes" target="_blank">Release Notes</a>
+		<span>|</span>
+		<a class="md-link" href="http://scholtek.com/md/wiki/index.php?page=Main+page" target="_blank">Wiki</a>
+		<span>|</span>
+		<a class="md-link" href="http://www.reddit.com/r/MineDefense/" target="_blank">Subreddit</a>
+ 	</div>
+
+ 	<div class="jquery-dialog" id="construct-dialog-21">
+		<p id="lightshrine-desc">A flashing vortex of electricity fills the orb in front of the statue. You feel a desire for greater riches overwhelming you as you approach.</p>
+		<p id="lightessdisplay">Lightning Essence: 0</p>
+		<p id="lightshrine-upgrade-cost">Upgrade Cost: 100 Dragonscale</p>
+		<button id="earthshrine-btn" class="btn oval-btn dialog-button" onclick="MD.increaseConstructLevel(21)">More Power!</button><br>
+		
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-21').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-22">
+		<p id="mech-desc">A large egg perches comically among the dirt and straw. What could possibly sleep within?</p>
+		<button class="btn oval-btn dialog-button" onclick="MD.showDragons()">View Dragons</button><br>
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-22').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-23">
+		<p id="rift-desc">A massive rift to another dimensions pulses violently on a stone platform. All adult dragons have a desire to pass through...</p>
+		<button class="btn oval-btn dialog-button" id="sacDragonButton" onclick="MD.sacrificeDragon()">Send Your Dragon Through!</button><br>
+		<button class="btn oval-btn dialog-button" id="auto-sacrifice-btn" onclick="MD.autoSacrifice()">Run Auto-Rift 9000! (13 Mages)</button><br>
+		<button class="btn oval-btn dialog-button" id="auto-auto-btn" onclick="MD.toggleAutoSacrifice()">Auto-Auto-Rift: Off</button><br>
+		<br>
+		<p id="dragonleveldisplay">Dragon Level: 0</p>
+		<p id="spiritessdisplay">Spirit Essence: 0</p>
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-23').dialog('close')">Close</button>
+	</div>
+
+	<div class="jquery-dialog" id="construct-dialog-24">
+		<p id="arch-desc">A looming library filled with ancient tomes and an aura of knowledge. It is said that one who masters these halls is bound by nothing.</p>
+		<button class="btn oval-btn dialog-button" onclick="MD.showArch()">View Arcaneum</button><br>
+		<button class="btn oval-btn dialog-button" onclick="$('#construct-dialog-24').dialog('close')">Close</button>
+	</div>
+
+</div>
+	
+		
+			</div> <!--Container-->
+			
+			<div id="push"></div>
+		</div> <!--Wrap-->
+		
+		<div id="footer">
+			<div class="container">
+				<p class="footer-text">&copy; Keilan - contact@scholtek.com</p>
+			</div>
+		</div>
+
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<!-- <script src="js/jquery1.11.0.js"></script> -->
+<script src="//g8hh.com/static/js/jquery.min.js"></script>
+		<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/jqueryui/1.10.1/jquery-ui.min.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/bootstrap.js"></script>
+		<!-- Include extra scripts here -->
+		<script src="js/base64.js"></script><script src="js/notify.js"></script><script src="js/qtip.js"></script><script src="js/imagesloaded.js"></script><script src="js/minedefense/minedefense-1.032.min.js"></script>	
+	<!-- Start of StatCounter Code for Default Guide -->
+	<!-- <script type="text/javascript">
+	var sc_project=9722672; 
+	var sc_invisible=1; 
+	var sc_security="c426a6fb"; 
+	var scJsHost = (("https:" == document.location.protocol) ?
+	"https://secure." : "http://www.");
+	document.write("<sc"+"ript type='text/javascript' src='" +
+	scJsHost+
+	"statcounter.com/counter/counter.js'></"+"script>");
+	</script>
+	<noscript><div class="statcounter"><a title="web analytics"
+	href="http://statcounter.com/" target="_blank"><img
+	class="statcounter"
+	src="http://c.statcounter.com/9722672/0/c426a6fb/1/"
+	alt="web analytics"></a></div></noscript> -->
+	<!-- End of StatCounter Code for Default Guide -->
+	<!--客服 开始-->
+<link rel="stylesheet" href="//g8hh.com/static/css/kf.css" type="text/css" media="screen" charset="utf-8">
+<script src="//g8hh.com/static/js/kf.js"></script>
+<!-- 客服 结束 -->
+<!--站长统计-->
+<div style="display: none">
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?dbb7ff142f4d4b68546c93b9cd6e9328";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+		</div>
+  </body>
+  
+</html>

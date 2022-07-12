@@ -1,0 +1,199 @@
+html,
+body {
+  height: 100%;
+  background-color: #FFFFFA;
+}
+
+table,td,th {
+	border:1px solid mediumblue;
+}
+
+img {
+	max-width: 100%;
+	min-width: 100px;
+	height: auto;
+}
+
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent the footer by it's height */
+  margin: 0 auto -60px;
+}
+
+#push,
+#footer {
+  height: 60px;
+}
+
+#footer {
+  text-align: center;
+  background-color: #F5F5F5;
+  height: 60px;
+}
+
+.footer-text {
+  margin: 20px 0;
+}
+
+/*
+Container
+*/
+.container {
+  width: 75%;
+  max-width: 1200px;
+  margin-top: 20px;
+  min-height:100%;
+}
+
+.contents {
+  width: 95%;
+  background-color:#F5F5F5;
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-bottom: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#game-iframe{
+  border: 3px solid mediumblue;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+}
+
+.game-canvas{
+  border: 3px solid mediumblue;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+}
+
+/*
+Navbar
+*/
+.navbar-default .navbar-brand {
+  color: mediumblue;
+}
+
+.navbar-default .navbar-brand:link,
+.navbar-default .navbar-brand:visited,
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:active {
+  color: mediumblue;
+}
+
+.navbar-default .navbar-nav > li > a:link,
+.navbar-default .navbar-nav > li > a:visited {
+  color: #3636B1;
+}
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:active {
+  color: mediumblue;
+}
+
+/*
+Description
+*/
+
+.page-header {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.lead {
+	margin-bottom: 0;
+}
+
+.page-title {
+  margin-top: 20px;
+  margin-bottom: 0;
+  font-size: 60px;
+  font-weight: normal;
+  color: mediumblue;
+}
+
+.blog-description {
+  font-size: 20px;
+  color: gray;
+}
+
+.blog-post-title {
+	margin-bottom: 5px;
+}
+
+/*
+Sidebar
+*/
+
+.page-sidebar {
+  background-color:#E0E0E0;
+  width:23.5%;
+}
+
+.archive-link {
+	margin-bottom: 5px;
+}
+
+/*
+Forms
+*/
+.form-group {
+	margin-bottom: 5;
+}
+
+/*
+Other
+*/
+a:link {color:mediumblue;}
+a:visited {color:mediumblue;}
+a:hover {color:darkblue;}
+a:active {color:darkblue;}
+
+.preview_output {
+	width: 95%;
+}
+
+.alignleft{
+  float: left;
+}
+
+.alignright{
+  float: right;
+}
+
+/*
+Ads
+*/
+.adframe{
+  height: 92px;
+  width: 730px;
+  border: 1px solid black;
+}
+
+.sidebar-ad{
+  height:602px;
+  width:162px;
+  border: 1px solid black;
+  float: right;
+}
+
+#wiki-ad{
+  margin-top:10px;
+  margin-right:10px;
+}
+
+/*
+Future
+*/
+
+.book-link {
+
+}
