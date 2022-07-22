@@ -1331,6 +1331,7 @@ var cnRegReplace = new Map([
     [/^Killed Slimeback The Rebel the level (.+) goblin and received (.+) gold! You have also absorbed (.+) Fire Essence from your fallen foe.$/, '击杀 史莱姆背叛者 $1 级哥布林，获得 $2 金币！你还从你倒下的敌人身上吸收了 $3 点火焰精华。'],
     [/^Killed Slopheart The Rebel the level (.+) goblin and received (.+) gold! You have also absorbed (.+) Water Essence from your fallen foe.$/, '击杀 邋遢的反叛者 等级 $1 的哥布林，获得 $2 金币！你还从你倒下的敌人身上吸收了 $3 点水精华。'],
     [/^Killed Putrideyes the level (.+) goblin and received (.+) gold!$/, '击杀 腐臭之眼 $1 级哥布林，获得 $2 金币！'],
+    [/^Killed Grimebeard the level (.+) goblin and received (.+) gold!$/, '击杀 灰胡子 $1 级哥布林，获得 $2 金币！'],
     [/^You found a buried treasure containing (.+) gold!$/, '你发现了一个埋藏的宝藏，里面有 $1 金币！'],
     [/^Enlarged Pincers  \-  Multiplies ant dig rate by (.+). \((.+) Gold\)$/, '放大钳 \- 将您的蚂蚁挖掘效率乘以 $1。 \($2 金币\)'],
     [/^Next at (.+) points$/, '下一个在 $1 点数'],
