@@ -1322,7 +1322,7 @@ var cnRegReplace = new Map([
     [/^The most elite soldiers in your kingdom can be trained to hunt the mighty dragons of Mineria. Finds (.+) dragonscale per second. \((.+) total\)$/, '可以训练您王国中最精锐的士兵来猎杀米内利亚的强大巨龙。 每秒发现 $1 龙鳞。 （总计 $2）'],
     [/^A fellow miner, and harder worker than you I might add. Provides (.+) gold per second. \((.+) total\)$/, '我可能会补充说，一个矿工，比你更努力的工人。 每秒提供 $1 金币。 （总计 $2）'],
     [/^A massive serpent of earth and flesh - best to keep your distance. Provides (.+) gold per second. \((.+) total\)$/, '一条大地和肉体的巨蛇——最好保持距离。 每秒提供 $1 金币。 （总计 $2'],
-    [/^Your delving mages have a (.+) chance of finding (.+) gem each second.$/, '您的钻探可能有 $1 的几率每秒找到 $2 颗宝石。'],
+    [/^Your delving mages have a (.+) chance of finding (.+) gem each second.$/, '您的钻探法师有 $1 的几率每秒找到 $2 颗宝石。'],
     [/^You have (.+) points$/, '你有 $1 点数'],
     [/^Killed Slimebeard the level (.+) goblin and received (.+) gold!$/, '击杀 $1 级哥布林 史莱姆胡子，获得 $2 金币！'],
     [/^Killed Greenback The Rebel the level (.+) goblin and received (.+) gold! You have also absorbed (.+) Fire Essence from your fallen foe.$/, '击杀 美元叛军 等级 $1 的妖精，获得 $2 金币！你还从你倒下的敌人身上吸收了 $3 点火焰精华。'],
